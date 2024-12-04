@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi IP Pública</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    header {
+      background-color: #6200ea;
+      color: white;
+      padding: 10px 0;
+    }
+    h1 {
+      margin: 0;
+    }
+    #ip {
+      font-size: 2rem;
+      color: #007bff;
+      margin-top: 20px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Herramienta de TI: Tu IP Pública</h1>
+  </header>
+  
+  <p id="loading">Obteniendo tu IP pública...</p>
+  <p id="ip" style="display:none;">Tu IP es: <span id="ip-address"></span></p>
+  
+  <footer>
+    <p>Creado con ❤ por [Tu Nombre]</p>
+  </footer>
+
+  <script>
+    // Fetch the public IP using ipify API
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('ip').style.display = 'block';
+        document.getElementById('ip-address').innerText = data.ip;
+      })
+      .catch(error => {
+        document.getElementById('loading').innerText = 'Error al obtener la IP.';
+        console.error('Error fetching IP:', error);
+      });
+  </script>
+</body>
+</html>
