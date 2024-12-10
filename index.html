@@ -1,63 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sofy Tools</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-      background-color: #ecf0f1;
-      color: #2c3e50;
-    }
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 15px 0;
-    }
-    h1 {
-      margin: 0;
-    }
-    #ip {
-      font-size: 2rem;
-      color: #2980b9;
-      margin-top: 20px;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #7f8c8d;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramientas TI</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
-    <h1>Sofy Tools</h1>
-  </header>
-  
-  <p id="loading">Obteniendo tu IP pública...</p>
-  <p id="ip" style="display:none;">Tu IP Publica es: <span id="ip-address"></span></p>
-  
-  <footer>
-    <p>Creado con ❤ por Sofy</p>
-  </footer>
+    <header class="header-bar">
+        <div class="header-content">
+            <a href="index.html" class="header-link">
+                <img src="images/sofyjoyharu.png" alt="Icono de Inicio" class="header-icon">
+            </a>
+            <a href="index.html" class="header-link">
+                <h1 class="header-title">Sofy IT Tools</h1>
+            </a>
+        </div>
+    </header>
+    <main>
+        <section class="tool-grid">
+            <!-- Primera tarjeta -->
+            <div class="tool-card white" onclick="loadTool('tools/subnet-calculator.html')">
+                <div class="tool-icon">
+                    <img src="images/subnet-caculator.png" alt="Icono de Calculadora de Subneteo">
+                </div>
+                <div class="tool-content">
+                    <h2>Subnet Calculator</h2>
+                    <p>Calcula subredes fácilmente para tu red.</p>
+                </div>
+            </div>
+            <!-- Segunda tarjeta -->
+            <div class="tool-card white" onclick="loadTool('tools/public-ip.html')">
+                <div class="tool-icon">
+                    <img src="images/public-ip.png" alt="Icono de IP Pública">
+                </div>
+                <div class="tool-content">
+                    <h2>Public IP</h2>
+                    <p>Obtén tu dirección IP pública en un clic.</p>
+                </div>
+            </div>
+            <!-- Tercera tarjeta -->
+            <div class="tool-card pastel-purple" onclick="loadTool('tools/comming-soon.html')">
+                <div class="tool-icon">
+                    <img src="images/pronto1.png" alt="Icono">
+                </div>
+                <div class="tool-content">
+                    <h2>Tool 3</h2>
+                    <p>Descripción.</p>
+                </div>
+            </div>
+            <!-- Cuarta tarjeta -->
+            <div class="tool-card pastel-mint-green" onclick="loadTool('tools/comming-soon.html')">
+                <div class="tool-icon">
+                    <img src="images/pronto2.png" alt="Icono">
+                </div>
+                <div class="tool-content">
+                    <h2>Tool 4</h2>
+                    <p>Descripción.</p>
+                </div>
+            </div>
+            <!-- Quinta tarjeta -->
+            <div class="tool-card pastel-light-lilac" onclick="loadTool('tools/comming-soon.html')">
+                <div class="tool-icon">
+                    <img src="images/pronto3.png" alt="Icono">
+                </div>
+                <div class="tool-content">
+                    <h2>Tool 5</h2>
+                    <p>Descripción.</p>
+                </div>
+            </div>
+            <!-- Sexta tarjeta -->
+            <div class="tool-card pastel-pink" onclick="loadTool('tools/comming-soon.html')">
+                <div class="tool-icon">
+                    <img src="images/coming-soon.png" alt="Icono">
+                </div>
+                <div class="tool-content">
+                    <h2>Tool 6</h2>
+                    <p>Descripción.</p>
+                </div>
+            </div>
+        </section>        
+    </main>
+    <footer class="footer">
+        <p>© 2024 IT Tools Generated with AI </p>
+    </footer>
 
-  <script>
-    // Fetch the public IP using ipify API
-    fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('ip').style.display = 'block';
-        document.getElementById('ip-address').innerText = data.ip;
-      })
-      .catch(error => {
-        document.getElementById('loading').innerText = 'Error al obtener la IP.';
-        console.error('Error fetching IP:', error);
-      });
-  </script>
+    <div id="tool-modal" class="modal">
+        <div class="modal-content">
+            <img src="images/cerrar-cuadrado.png" alt="Cerrar" class="close-btn" onclick="closeModal()">
+            <iframe id="tool-frame" src="" frameborder="0"></iframe>
+        </div>
+    </div> 
+
+    <script src="js/main.js"></script>
 </body>
 </html>
