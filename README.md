@@ -1,2 +1,2 @@
-# sofytools
+# Sofy tools
 IT Tools Site
