@@ -1,3 +1,3 @@
 # Sofy tools
-IT Tools Site
-[Ir al sitio web](https://sofyjoyharu.github.io/)
+IT Tools Site - 
+<a href="https://sofyjoyharu.github.io/" target="_blank">Ir al sitio web</a>
