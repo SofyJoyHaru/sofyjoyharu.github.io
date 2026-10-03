@@ -7,11 +7,9 @@
     --dark-gray: #343a40;
 }
 
-
 main {
     flex: 1; /* El contenido principal se expande para ocupar el espacio disponible */
 }
-
 /* Global styles */
 body {
     background-color: var(--light-gray);
