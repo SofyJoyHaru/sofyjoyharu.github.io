@@ -1,0 +1,16 @@
+Sofy IT Tools - Professional Home V2
+
+Cambios realizados:
+- Reemplazo de la cabecera simple por un Executive Tech Hero.
+- Perfil de Sofy Joy Haru integrado con enlace a @SofyJoyHaru.
+- Contenido profesional basado en software, IA y diseño digital.
+- Identidad visual Cloud/Linux/Containers/Networking/Automation.
+- Fondo tecnológico con grid, nodos y comandos decorativos.
+- Foto con marco degradado y glow.
+- Botones Explorar herramientas y GitHub.
+- Cards modernizadas con categorías y mejor hover.
+- Container & Kubernetes Assistant destacado como V2.
+- Footer actualizado.
+- Responsive para desktop, tablet y móvil.
+- Todo el nuevo CSS está aislado bajo .home-page para no alterar
+  los HTML/CSS internos de las herramientas.
