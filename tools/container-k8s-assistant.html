@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Container & Kubernetes Assistant</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/container-k8s-assistant.css">
+</head>
+<body>
+
+<header class="tool-page-header">
+  <div class="tool-page-title">
+    <div class="tool-page-icon-fallback" aria-hidden="true">⌘</div>
+    <div>
+      <h1>Container & Kubernetes Assistant</h1>
+      <p class="tool-page-subtitle">Genera comandos y runbooks para inventario, diagnóstico y operación de contenedores.</p>
+    </div>
+  </div>
+  <div class="header-badges">
+    <span class="badge">Kubernetes V1</span>
+    <span class="badge badge-soft">100% navegador</span>
+  </div>
+</header>
+
+<main class="container">
+
+<section class="card">
+  <div class="section-heading">
+    <div>
+      <h2>Contexto de trabajo</h2>
+      <p>Define una sola vez los valores que reutilizarán los comandos.</p>
+    </div>
+    <button class="secondary-button" id="clearContextButton" type="button">Limpiar contexto</button>
+  </div>
+
+  <div class="context-grid">
+    <div class="form-group">
+      <label for="platform">Plataforma</label>
+      <select id="platform">
+        <option value="kubernetes" selected>Kubernetes</option>
+        <option value="openshift">OpenShift</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="namespace">Namespace</label>
+      <input type="text" id="namespace" value="default" placeholder="production">
+    </div>
+    <div class="form-group">
+      <label for="pod">Pod</label>
+      <input type="text" id="pod" placeholder="app-backend-7d9c8f">
+    </div>
+    <div class="form-group">
+      <label for="container">Container</label>
+      <input type="text" id="container" placeholder="backend">
+    </div>
+    <div class="form-group">
+      <label for="node">Node / Worker</label>
+      <input type="text" id="node" placeholder="worker01">
+    </div>
+    <div class="form-group">
+      <label for="service">Service</label>
+      <input type="text" id="service" placeholder="api-backend">
+    </div>
+    <div class="form-group">
+      <label for="host">Host / destino</label>
+      <input type="text" id="host" placeholder="api.backend.local">
+    </div>
+    <div class="form-group">
+      <label for="port">Puerto</label>
+      <input type="number" id="port" value="443" min="1" max="65535">
+    </div>
+  </div>
+
+  <div class="context-note" id="contextNote"></div>
+</section>
+
+<section class="card">
+  <h2>¿Cómo quieres trabajar?</h2>
+  <div class="mode-grid">
+    <button class="mode-card active" data-mode="problem" type="button">
+      <span class="mode-icon">🔍</span>
+      <strong>Tengo un problema</strong>
+      <small>Genera un runbook de troubleshooting según el síntoma.</small>
+    </button>
+    <button class="mode-card" data-mode="task" type="button">
+      <span class="mode-icon">🛠️</span>
+      <strong>Quiero realizar una tarea</strong>
+      <small>Inventario, acceso, networking, archivos y recursos.</small>
+    </button>
+  </div>
+</section>
+
+<section class="card" id="problemModeSection">
+  <div class="section-heading">
+    <div>
+      <h2>Troubleshooting guiado</h2>
+      <p>Selecciona el problema y genera una secuencia ordenada de validación.</p>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="problemType">Problema</label>
+      <select id="problemType">
+        <option value="app-not-responding">Aplicación no responde</option>
+        <option value="crashloop">Pod CrashLoopBackOff</option>
+        <option value="restarting">Pod reiniciándose</option>
+        <option value="pending">Pod Pending</option>
+        <option value="imagepull">ImagePullBackOff / ErrImagePull</option>
+        <option value="dns">DNS no resuelve</option>
+        <option value="connectivity">No conecta a otro servicio</option>
+        <option value="cpu">Alto consumo de CPU</option>
+        <option value="memory">Alto consumo de memoria</option>
+        <option value="storage">Problemas de storage</option>
+        <option value="config">Necesito revisar configuración</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="shellType">Shell preferido</label>
+      <select id="shellType">
+        <option value="/bin/bash">/bin/bash</option>
+        <option value="/bin/sh">/bin/sh</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="primary-button" id="generateProblemButton" type="button">Generar runbook</button>
+  </div>
+</section>
+
+<section class="card hidden" id="taskModeSection">
+  <div class="section-heading">
+    <div>
+      <h2>Asistente por tarea</h2>
+      <p>Selecciona un módulo y genera únicamente los comandos que necesitas.</p>
+    </div>
+  </div>
+
+  <div class="task-tabs">
+    <button class="task-tab active" data-task="inventory" type="button">Inventario</button>
+    <button class="task-tab" data-task="pod" type="button">Pod troubleshooting</button>
+    <button class="task-tab" data-task="access" type="button">Acceso</button>
+    <button class="task-tab" data-task="network" type="button">Networking</button>
+    <button class="task-tab" data-task="files" type="button">Copiar archivos</button>
+    <button class="task-tab" data-task="resources" type="button">Recursos</button>
+  </div>
+
+  <div class="task-panel" data-task-panel="inventory">
+    <h3>Inventario</h3>
+    <div class="check-grid">
+      <label><input type="checkbox" id="invNodes" checked> Nodes</label>
+      <label><input type="checkbox" id="invPods" checked> Pods</label>
+      <label><input type="checkbox" id="invDeployments" checked> Deployments</label>
+      <label><input type="checkbox" id="invServices" checked> Services</label>
+      <label><input type="checkbox" id="invConfigMaps"> ConfigMaps</label>
+      <label><input type="checkbox" id="invStorage"> Storage</label>
+      <label><input type="checkbox" id="invEvents"> Events</label>
+    </div>
+  </div>
+
+  <div class="task-panel hidden" data-task-panel="pod">
+    <h3>Pod troubleshooting</h3>
+    <div class="check-grid">
+      <label><input type="checkbox" id="podStatus" checked> Estado</label>
+      <label><input type="checkbox" id="podDescribe" checked> Describe</label>
+      <label><input type="checkbox" id="podLogs" checked> Logs</label>
+      <label><input type="checkbox" id="podPreviousLogs"> Logs anteriores</label>
+      <label><input type="checkbox" id="podEvents" checked> Eventos</label>
+      <label><input type="checkbox" id="podYaml"> YAML completo</label>
+    </div>
+  </div>
+
+  <div class="task-panel hidden" data-task-panel="access">
+    <h3>Acceso al contenedor</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="accessShell">Shell</label>
+        <select id="accessShell">
+          <option value="/bin/bash">/bin/bash</option>
+          <option value="/bin/sh">/bin/sh</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="insideCommand">Comando directo opcional</label>
+        <input type="text" id="insideCommand" placeholder="env | sort">
+      </div>
+    </div>
+    <div class="check-grid">
+      <label><input type="checkbox" id="checkProcesses"> Procesos</label>
+      <label><input type="checkbox" id="checkPorts"> Puertos</label>
+      <label><input type="checkbox" id="checkDns"> DNS</label>
+      <label><input type="checkbox" id="checkFilesystem"> Filesystem</label>
+      <label><input type="checkbox" id="checkEnv"> Variables</label>
+      <label><input type="checkbox" id="checkHttp"> HTTP</label>
+    </div>
+  </div>
+
+  <div class="task-panel hidden" data-task-panel="network">
+    <h3>Networking</h3>
+    <div class="check-grid">
+      <label><input type="checkbox" id="netDns" checked> DNS</label>
+      <label><input type="checkbox" id="netTcp" checked> TCP</label>
+      <label><input type="checkbox" id="netHttp" checked> HTTP/HTTPS</label>
+      <label><input type="checkbox" id="netService"> Service</label>
+      <label><input type="checkbox" id="netEndpoints"> Endpoints / EndpointSlices</label>
+      <label><input type="checkbox" id="netPodIp"> Pod IP</label>
+    </div>
+  </div>
+
+  <div class="task-panel hidden" data-task-panel="files">
+    <h3>Copiar archivos</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="copyDirection">Dirección</label>
+        <select id="copyDirection">
+          <option value="to-pod">Local → Pod</option>
+          <option value="from-pod">Pod → Local</option>
+          <option value="to-node">Local → Worker por SCP</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="localPath">Ruta local</label>
+        <input type="text" id="localPath" value="./archivo.txt">
+      </div>
+      <div class="form-group">
+        <label for="remotePath">Ruta destino/origen</label>
+        <input type="text" id="remotePath" value="/tmp/archivo.txt">
+      </div>
+      <div class="form-group">
+        <label for="sshUser">Usuario SSH</label>
+        <input type="text" id="sshUser" value="usuario">
+      </div>
+    </div>
+  </div>
+
+  <div class="task-panel hidden" data-task-panel="resources">
+    <h3>Recursos / Performance</h3>
+    <div class="check-grid">
+      <label><input type="checkbox" id="resTopNodes" checked> Top nodes</label>
+      <label><input type="checkbox" id="resTopPods" checked> Top pods</label>
+      <label><input type="checkbox" id="resPodUsage"> Uso del pod</label>
+      <label><input type="checkbox" id="resRequestsLimits"> Requests / Limits</label>
+      <label><input type="checkbox" id="resRestartCount"> Restart count</label>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="primary-button" id="generateTaskButton" type="button">Generar comandos</button>
+  </div>
+</section>
+
+<section class="card">
+  <div class="section-heading">
+    <div>
+      <h2>Runbook generado</h2>
+      <p>Los comandos se construyen localmente en tu navegador.</p>
+    </div>
+    <div class="result-actions">
+      <button class="secondary-button" id="copyAllButton" type="button">Copiar todos</button>
+      <button class="secondary-button" id="clearResultsButton" type="button">Limpiar</button>
+    </div>
+  </div>
+
+  <div id="validationMessage" class="validation-message hidden"></div>
+  <div id="runbookContainer" class="runbook-container">
+    <div class="empty-state">Selecciona un problema o una tarea para generar los comandos.</div>
+  </div>
+</section>
+
+<section class="card">
+  <details>
+    <summary>Referencia rápida</summary>
+    <div class="reference-grid">
+      <div>
+        <h3>Pods</h3>
+        <code>kubectl get pods -A -o wide</code>
+        <code>kubectl describe pod POD -n NAMESPACE</code>
+        <code>kubectl logs POD -n NAMESPACE</code>
+      </div>
+      <div>
+        <h3>Nodes</h3>
+        <code>kubectl get nodes -o wide</code>
+        <code>kubectl describe node NODE</code>
+        <code>kubectl top nodes</code>
+      </div>
+      <div>
+        <h3>Networking</h3>
+        <code>kubectl get svc -A</code>
+        <code>kubectl get endpoints -A</code>
+        <code>kubectl get endpointslices -A</code>
+      </div>
+      <div>
+        <h3>Archivos</h3>
+        <code>kubectl cp archivo NAMESPACE/POD:/tmp/</code>
+        <code>kubectl cp NAMESPACE/POD:/tmp/log.txt ./log.txt</code>
+      </div>
+    </div>
+  </details>
+</section>
+
+</main>
+
+<script src="../js/container-k8s-assistant.js"></script>
+</body>
+</html>
